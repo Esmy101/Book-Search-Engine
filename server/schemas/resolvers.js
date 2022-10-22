@@ -36,7 +36,7 @@ const resolvers = {
       return { token, user };
     },
     saveBook: async (parent, { book }, context) => {
-      console.log(context.user);
+      console.log(context);
 
       if (context.user) {
         try {
