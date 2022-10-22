@@ -90,11 +90,18 @@ THEN I am logged out of the site and presented with a menu with the options Sear
 
 ---
 
-![image]()
+_Once you create a acount you can search for books_
+
+![image](./Assets/BookMain.gif)
+
+_You can add them to your library and delete them too_
+
+![image](./Assets/Book%20Library%20.gif)
 
 ## Questions
 
 ---
 
 [Website]()
+
 [GitHub](https://github.com/)
