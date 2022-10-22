@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Jumbotron,
   Container,
@@ -28,9 +28,23 @@ const SavedBooks = () => {
     }
 
     try {
-      const response = await deleteBook({ variables: { bookId, token } });
+      await deleteBook({
+        variables: { bookId: bookId },
+        update: (cache) => {
+          const data = cache.readQuery({ query: GET_ME });
+          const userDataCache = data.me;
+          const savedBooksCache = userDataCache.savedBooks;
+          const updatedBookCache = savedBooksCache.filter(
+            (book) => book.bookId !== bookId
+          );
+          data.me.savedBooks = updatedBookCache;
+          cache.writeQuery({
+            query: GET_ME,
+            data: { data: { ...data.me.savedBooks } },
+          });
+        },
+      });
 
-      const updatedUser = await response.json();
       //setUserData(updatedUser);
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
@@ -43,7 +57,7 @@ const SavedBooks = () => {
   if (loading) {
     return <h2>LOADING...</h2>;
   }
-  console.log(userData);
+  console.log(data);
 
   return (
     <>
@@ -54,6 +68,7 @@ const SavedBooks = () => {
       </Jumbotron>
       <Container>
         <h2>
+          {console.log("user data", userData)}
           {userData.savedBooks.length
             ? `Viewing ${userData.savedBooks.length} saved ${
                 userData.savedBooks.length === 1 ? "book" : "books"
