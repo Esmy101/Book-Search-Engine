@@ -14,13 +14,12 @@ const resolvers = {
 
   Mutation: {
     login: async (parent, { email, password }) => {
-      const found_user = User.findOne({ email: email });
-
-      if (!found_user) {
+      const user = await User.findOne({ email });
+      if (!user) {
         throw new AuthenticationError("No profile with this email found!");
       }
 
-      const correctPw = await user.isCorrectPassword(body.password);
+      const correctPw = await user.isCorrectPassword(password);
       if (!correctPw) {
         throw new AuthenticationError("incorrect password");
       }
@@ -31,7 +30,7 @@ const resolvers = {
       const user = await User.create({ username, email, password });
 
       if (!user) {
-        return null;
+        throw new AuthenticationError("Could not create account");
       }
       const token = signToken(user);
       return { token, user };
