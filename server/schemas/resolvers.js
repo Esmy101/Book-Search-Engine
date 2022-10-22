@@ -1,11 +1,7 @@
-const { Class } = require('../models');
+const { Book, User } = require("../models");
 
 const resolvers = {
-  Query: {
-    classes: async () => {
-      return await Class.find({});
-    }
-  }
+  Query: {},
 };
 
 module.exports = resolvers;
