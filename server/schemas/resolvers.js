@@ -14,9 +14,9 @@ const resolvers = {
 
   Mutation: {
     login: async (parent, { email, password }) => {
-      const found_user = User.findOne({ username: username });
+      const found_user = User.findOne({ email: email });
 
-      if (!user) {
+      if (!found_user) {
         throw new AuthenticationError("No profile with this email found!");
       }
 
